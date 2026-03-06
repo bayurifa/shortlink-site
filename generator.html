@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Shortlink Generator</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Shortlink Generator</h2>
+
+<input id="url" placeholder="URL">
+
+<input id="alias" placeholder="Custom alias">
+
+<input id="password" placeholder="Password (optional)">
+
+<input id="expire" type="date">
+
+<button onclick="generate()">Generate</button>
+
+<div id="result"></div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
