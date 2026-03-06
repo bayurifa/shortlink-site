@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>BSR Link</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="card" id="app">
+Loading...
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+
+var firebaseConfig = {
+apiKey: "AIzaSyCC-5llQ0CpexWaUzqDT-qg4WDBOpdVjho",
+authDomain: "bsr-mobile-bb9d6.firebaseapp.com",
+databaseURL: "https://bsr-mobile-bb9d6-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId: "bsr-mobile-bb9d6",
+storageBucket: "bsr-mobile-bb9d6.firebasestorage.app",
+messagingSenderId: "428696171820",
+appId: "1:428696171820:web:8e76a05b9dae2d2c876889"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+var db = firebase.database();
+
+/* GET CODE */
+
+var code = location.search.replace("?","");
+
+if(!code){
+
+document.getElementById("app").innerHTML="Invalid shortlink";
+
+}else{
+
+db.ref("shortlinks/"+code).once("value").then(function(snap){
+
+if(!snap.exists()){
+
+document.getElementById("app").innerHTML="Link tidak ditemukan";
+return;
+
+}
+
+var data=snap.val();
+
+/* EXPIRE */
+
+if(data.expire){
+
+var now=new Date().toISOString().split("T")[0];
+
+if(now>data.expire){
+
+document.getElementById("app").innerHTML="Link expired";
+return;
+
+}
+
+}
+
+/* PASSWORD */
+
+if(data.password){
+
+document.getElementById("app").innerHTML=`
+
+<h3>Password Required</h3>
+
+<input id="pass">
+
+<button onclick="checkPass()">Open</button>
+
+`;
+
+window.checkPass=function(){
+
+if(pass.value===data.password){
+
+location.href=data.url;
+
+}else{
+
+alert("Password salah");
+
+}
+
+}
+
+}else{
+
+location.href=data.url;
+
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
